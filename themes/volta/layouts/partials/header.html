@@ -1,0 +1,85 @@
+    <body class="Vlt-template Vlt-template--sidenav"> 
+
+      <header class="Vlt-sidenav__mobile Vlt-sidenav__mobile--dark">
+          <a href="/"><img class="Vlt-sidenav__mobile__logo" src="{{ "/images/logos/nexmo-logo--collapsed.svg" | relURL }}"></a>
+        <button id="Vlt-sidenav-mobile-trigger">
+          <svg class="Vlt-sidenav__collapse__close">
+            <use xlink:href="/symbol/volta-icons.svg#Vlt-icon-menu"></use>
+          </svg>
+        </button>
+      </header>
+
+      <aside id="Vlt-sidenav" class="Vlt-sidenav Vlt-sidenav--dark">
+        <!-- NOTE: the following script is a hacky solution to maintain the (un)collapsed state of the menu -->
+        <!-- You can remove it if you're using a framework or you have an alternative way to achieve this -->
+        <script>
+          loadMenu();   
+function loadMenu() {
+  if(localStorage.getItem('menuCollapse')) {
+    $('#Vlt-sidenav .Vlt-sidemenu__trigger_active').removeClass('Vlt-sidemenu__trigger_active');
+    $('#Vlt-sidenav').addClass('Vlt-sidenav--collapsed');
+  }
+}
+        </script>
+        <!-- End of script -->
+
+        <div class="Vlt-sidenav__block Vlt-sidenav__block--logo Vlt-M-plus">
+          <a class="Vlt-sidenav__logo" href="/">
+              <img class="Vlt-sidenav__elem--full" src="{{ "/images/logos/nexmo-logo.svg" | relURL }}">
+              <img class="Vlt-sidenav__elem--collapsed" src="{{ "/images/logos/nexmo-logo--collapsed.svg" | relURL }}">
+          </a>
+          <div id="Vlt-sidenav-collapse-trigger" class="Vlt-sidenav__collapse">
+            <svg class="Vlt-sidenav__collapse__close"><use xlink:href="/symbol/volta-icons.svg#Vlt-icon-chevron-left"></use></svg>
+            <svg class="Vlt-sidenav__collapse__open"><use xlink:href="/symbol/volta-icons.svg#Vlt-icon-menu"></use></svg>
+          </div>
+        </div>
+
+        <div class="Vlt-sidenav__scroll">
+          <ul class="Vlt-sidemenu Vlt-sidemenu--rounded">
+            <li role="separator"><h5 class="Vlt-sidemenu__title">HTTP Codes</h5></li>
+            {{ $codes := sort (where .Site.RegularPages "Section" "http-code") ".Title" }}
+            {{ $.Scratch.Set "FirstLetter" (index (split (index $codes 0).Title "") 0) }}
+            <li>
+              <p class="Vlt-sidemenu__trigger">
+              <span class="Vlt-sidemenu__label">{{ $.Scratch.Get "FirstLetter" }}xx</span>
+              </p>
+              <ul>
+            {{ range $codes }}
+            {{ $firstLetter := index (split .Title "") 0 }}
+                {{ if ne $firstLetter ($.Scratch.Get "FirstLetter") }}
+                {{ $.Scratch.Set "FirstLetter" $firstLetter }}
+                    </ul>
+                    </li>
+                    <li>
+                      <p class="Vlt-sidemenu__trigger">
+                      <span class="Vlt-sidemenu__label">{{ $firstLetter }}xx</span>
+                      </p>
+                      <ul>
+                {{ end }}
+                <li><a class="Vlt-sidemenu__link" href="{{ .RelPermalink }}"><span class="Vlt-sidemenu__label">{{ .Title }}</span></a></li>
+            {{ end }}
+              </ul>
+            </li>
+
+            <li role="separator"><h5 class="Vlt-sidemenu__title">Standards</h5></li>
+            {{ range $index, $value := (where .Site.RegularPages "Section" "standard").GroupByParam "category" }}
+            <li>
+              <p class="Vlt-sidemenu__trigger">
+              <span class="Vlt-sidemenu__label">{{ .Key | title }}</span>
+              </p>
+              <ul>
+                  {{ range (where .Pages "Section" "standard") }}
+                  <li><a class="Vlt-sidemenu__link" href="{{ .RelPermalink }}"><span class="Vlt-sidemenu__label">{{ .Title }}</span></a></li>
+                  {{ end }}
+              </ul>
+            </li>
+            {{ end }}
+
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <main class="Vlt-main Vlt-main--dark">
+
+          <div class="Vlt-card Vlt-article">

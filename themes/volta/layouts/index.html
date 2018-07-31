@@ -1,0 +1,13 @@
+{{ define "main" }}
+    <h1>Nexmo API standards</h1>
+
+    {{ .Content }}
+
+    <h3>HTTP Codes</h3>
+    <ul>
+    {{ range sort (where .Data.Pages "Section" "http-code") ".Title" }}
+    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{ end }}
+    </ul>
+{{ end }}
+
