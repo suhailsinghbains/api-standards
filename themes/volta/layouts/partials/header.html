@@ -61,12 +61,8 @@ function loadMenu() {
               </ul>
             </li>
 
-            <li role="separator"><h5 class="Vlt-sidemenu__title">Standards</h5></li>
             {{ range $index, $value := (where .Site.RegularPages "Section" "standard").GroupByParam "category" }}
-            <li>
-              <p class="Vlt-sidemenu__trigger">
-              <span class="Vlt-sidemenu__label">{{ .Key | title }}</span>
-              </p>
+            <li role="separator"><h5 class="Vlt-sidemenu__title">{{ .Key | title }}</h5></li>
               <ul>
                   {{ range (where .Pages "Section" "standard") }}
                   <li><a class="Vlt-sidemenu__link" href="{{ .RelPermalink }}"><span class="Vlt-sidemenu__label">{{ .Title }}</span></a></li>
@@ -74,8 +70,6 @@ function loadMenu() {
               </ul>
             </li>
             {{ end }}
-
-            </li>
           </ul>
         </div>
       </aside>
