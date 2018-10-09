@@ -39,6 +39,8 @@ In certain situations (e.g. purchasing a number) it may be beneficial to skip
 over pages if you're not interested in that data. In this situation, `page` and
 `page_size` shall be used.
 
+The first page is page `1`.
+
 To add a new page-based public API, you must get agreement from DevRel.
 
 - Paging shall use a standard set of hal+json `_links`
@@ -50,6 +52,8 @@ To add a new page-based public API, you must get agreement from DevRel.
 - Paging `_links` must include filters.
 - The page size parameter must be called `page_size`
 - The page index parameter must be called `page`
+- The page count parameter must be called `total_pages`
+- The results parameter must be called `total_items`
 
 ### Examples
 
@@ -84,6 +88,8 @@ To add a new page-based public API, you must get agreement from DevRel.
 {
   "page_size": 100,
   "page": 3,
+  "total_pages": 8,
+  "total_items": 814,
   "_embedded": {
     "resource_name": {
       "data":"here"
@@ -98,6 +104,9 @@ To add a new page-based public API, you must get agreement from DevRel.
     },
     "prev": {
       "href": "https://example.com/resource?page_size=100&order=asc&page=2"
+    },
+    "last": {
+      "href": "https://example.com/resource?page_size=100&order=asc&page=8"
     }
   }
 }
