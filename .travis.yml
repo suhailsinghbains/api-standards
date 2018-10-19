@@ -1,0 +1,22 @@
+language: go
+
+go:
+  - master
+
+install:
+  - go get github.com/spf13/hugo
+
+script:
+  - hugo
+
+deploy:
+  local_dir: public
+  repo: nexmo/api-standards
+  target_branch: gh-pages
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  email: devrel@nexmo.com
+  name: "NexmoDev"
+  on:
+    branch: master
